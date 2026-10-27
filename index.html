@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>УЧИтель — УЧИсь!</title>
+<style>
+:root{--bg:#14206b;--bg2:#0b1245;--ink:#fff;--pen:#ffc928;--red:#ff4d63;--ok:#2ecc8f;--card:rgba(255,255,255,.1)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--ink);font-family:"Trebuchet MS","Segoe UI",Arial,sans-serif;background:linear-gradient(var(--bg),var(--bg2));background-attachment:fixed;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px);background-size:36px 36px;pointer-events:none}
+button,select,input{font:inherit}
+button{cursor:pointer;border:0;border-radius:14px;padding:.55em 1em;background:var(--card);color:var(--ink);font-weight:700;font-size:clamp(14px,1.4vw,22px);border:2px solid rgba(255,255,255,.25);transition:transform .15s,background .2s}
+button:hover{transform:translateY(-2px);background:rgba(255,255,255,.2)}
+button.pri{background:var(--pen);color:#1a1a3a;border-color:var(--pen)}
+button.red{background:var(--red);border-color:var(--red)}
+#top{position:relative;display:flex;gap:10px;align-items:center;padding:10px 16px;flex-wrap:wrap}
+#top .sp{flex:1;min-width:120px}
+#lab{font-size:clamp(14px,1.5vw,24px);font-weight:700}
+#pg{position:relative;height:8px;background:rgba(255,255,255,.15);margin:0 16px;border-radius:8px;overflow:hidden}
+#pgb{height:100%;width:0;background:var(--pen);transition:width .5s}
+#tm{font-size:clamp(26px,3.4vw,56px);font-weight:900;font-variant-numeric:tabular-nums;padding:0 14px;border:3px solid var(--pen);border-radius:14px;color:var(--pen)}
+#tm.warn{color:var(--red);border-color:var(--red);animation:pl 1s infinite}
+@keyframes pl{50%{transform:scale(1.08)}}
+#st{position:relative;padding:14px 5vw 120px;min-height:70vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:18px}
+.in{animation:up .5s both}
+@keyframes up{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+h1{font-size:clamp(44px,9vw,150px);margin:0;line-height:1;font-weight:900;letter-spacing:-.02em}
+h1 i{font-style:normal;color:var(--pen);border-bottom:.08em solid var(--red)}
+.sub{font-size:clamp(20px,2.6vw,44px)}
+.q{font-size:clamp(28px,4.4vw,76px);margin:0;line-height:1.2;max-width:1400px}
+.tag{background:var(--pen);color:#1a1a3a;border-radius:30px;padding:.2em 1em;font-weight:800;font-size:clamp(16px,1.8vw,30px)}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%;max-width:1300px}
+.opt{font-size:clamp(20px,2.7vw,46px);text-align:left;padding:.6em .9em;border-radius:18px}
+.opt.sel{background:var(--pen);color:#1a1a3a}
+.opt.ok{background:var(--ok);color:#06251a;border-color:var(--ok);animation:pop .5s}
+.opt.bad{background:var(--red);animation:sh .4s}
+@keyframes pop{50%{transform:scale(1.05)}}
+@keyframes sh{25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}
+.ex{font-size:clamp(20px,2.5vw,42px);background:rgba(46,204,143,.2);border:2px solid var(--ok);border-radius:18px;padding:.6em 1em;max-width:1300px;animation:up .4s}
+.act{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.act button,.aw button{font-size:clamp(18px,2vw,32px)}
+.aw{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:center;font-size:clamp(16px,1.8vw,28px)}
+.big{font-size:clamp(70px,13vw,220px);line-height:1.1}
+.hint{font-size:clamp(24px,3.4vw,58px);background:var(--card);border-left:8px solid var(--pen);padding:.4em .8em;border-radius:12px;text-align:left;animation:up .4s}
+.teams{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;width:100%}
+.tc{background:var(--card);border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:10px;font-size:clamp(18px,2vw,32px)}
+.tc input{padding:.4em;border-radius:10px;border:2px solid rgba(255,255,255,.3);background:rgba(0,0,0,.25);color:#fff;font-size:.8em;width:100%}
+.rt{display:flex;gap:6px;justify-content:center}.rt button.on{background:var(--pen);color:#1a1a3a}
+.splash h1{animation:zoom .9s both}
+@keyframes zoom{from{opacity:0;transform:scale(.6) rotate(-3deg)}to{opacity:1;transform:none}}
+.rg{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;width:100%;max-width:1300px}
+.rg button{text-align:left;font-size:clamp(15px,1.6vw,24px)}
+.set{display:flex;flex-direction:column;gap:10px;font-size:clamp(18px,2vw,30px);align-items:center}
+.set input,.set select,#pn input,#pn select{padding:.4em .6em;border-radius:10px;border:2px solid rgba(255,255,255,.3);background:rgba(0,0,0,.35);color:#fff;font-size:inherit}
+#sb{position:fixed;left:0;right:0;bottom:0;display:flex;gap:10px;justify-content:center;padding:8px;background:rgba(5,8,40,.85);z-index:5;flex-wrap:wrap}
+.chip{background:var(--card);border-radius:14px;padding:4px 16px;display:flex;align-items:center;gap:10px;font-size:clamp(14px,1.7vw,28px)}
+.chip b{color:var(--pen);font-size:1.6em}
+.pod{display:flex;gap:16px;align-items:flex-end;justify-content:center;flex-wrap:wrap}
+.pod div{background:var(--card);border-radius:20px;padding:20px 30px;font-size:clamp(22px,3vw,50px);animation:up .8s both}
+.pod .f{background:var(--pen);color:#1a1a3a;font-size:clamp(30px,4.6vw,80px);animation:up .8s both,pl 1.4s 1s 3}
+#pn{position:fixed;top:0;right:0;bottom:0;width:min(360px,100vw);background:#0a0f3c;border-left:3px solid var(--pen);padding:14px;overflow:auto;transform:translateX(105%);transition:transform .3s;z-index:20;display:flex;flex-direction:column;gap:8px}
+#pn.show{transform:none}
+#pn h4{margin:8px 0 0;color:var(--pen)}
+#pn .r{display:flex;gap:6px;flex-wrap:wrap}
+#pn button{font-size:15px;padding:.4em .7em}
+#pn input{width:90px}
+#bd{position:fixed;inset:0;background:rgba(5,8,40,.94);z-index:15;display:none;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+#bd.show{display:flex}
+#bd table{font-size:clamp(20px,2.8vw,46px);border-collapse:collapse}
+#bd td{padding:6px 14px}
+#bd input{width:3.2em;font-size:inherit;text-align:center;border-radius:8px;border:2px solid var(--pen);background:#000;color:#fff}
+#tu{position:fixed;inset:0;display:none;align-items:center;justify-content:center;font-size:18vw;font-weight:900;color:var(--red);background:rgba(5,8,40,.8);z-index:30;pointer-events:none}
+#tu.show{display:flex;animation:pop .6s}
+@media(max-width:700px){.opts{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+</style></head><body>
+<div id="top">
+<button onclick="home()">☰ Главное меню</button><button onclick="board()">Табло</button>
+<span id="lab" class="sp"></span><span id="tm">01:00</span>
+<button class="pri" onclick="panel()">ПАНЕЛЬ ВЕДУЩЕГО</button></div>
+<div id="pg"><div id="pgb"></div></div>
+<div id="st"></div><div id="sb" onclick="board()"></div>
+<div id="bd"></div><div id="tu">ВРЕМЯ!</div>
+<div id="pn">
+<button onclick="panel()">✕ Закрыть</button>
+<h4>Задания</h4><div class="r"><button onclick="pv()">◀ Назад</button><button class="pri" onclick="nx()">Следующее ▶</button></div>
+<select id="rs" onchange="goR(+this.value)"></select>
+<h4>Ответ</h4><div class="r"><button onclick="tgl(1)">Показать</button><button onclick="tgl(0)">Скрыть</button><button onclick="hnt()">Подсказка</button><button onclick="nw()">Новое слово</button></div>
+<h4>Таймер</h4><div class="r" id="pr"></div>
+<div class="r"><input id="cs" type="number" min="1" placeholder="сек"><button onclick="setT(+$('cs').value||60)">Задать</button></div>
+<div class="r"><button class="pri" onclick="startT()">Старт</button><button onclick="pauseT()">Пауза</button><button onclick="setT(T.t)">Сброс</button></div>
+<h4>Баллы</h4><div class="r"><select id="ps"></select><input id="pa" type="number" value="1"></div>
+<div class="r"><button class="pri" onclick="adj(+$('ps').value,+$('pa').value)">+ Начислить</button><button class="red" onclick="adj(+$('ps').value,-$('pa').value)">− Снять</button></div>
+<h4>Игра</h4><div class="r"><button onclick="endRound()">Завершить раунд</button><button onclick="fin()">Завершить игру</button><button class="red" onclick="newGame()">Перезапустить</button></div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+/* ===== ДАННЫЕ: правьте вопросы и ответы здесь ===== */
+// mc: [вопрос,[варианты],номер верного (с 0),пояснение,подпись]   p = баллов за верный ответ
+const R=[
+{t:"ПЕРЕКЛИЧКА",k:"team"},
+{t:"НЕ ВСЁ ТАК ОДНОЗНАЧНО",k:"mc",p:2,d:[
+["Какой океан самый большой?",["Атлантический","Индийский","Тихий","Северный Ледовитый"],2,"Тихий океан занимает около трети поверхности Земли."],
+["Кто автор «Слов назидания»?",["Абай Кунанбаев","Мухтар Ауэзов","Ыбырай Алтынсарин","Шокан Уалиханов"],0,"Абай — великий казахский поэт и мыслитель."],
+["Какое озеро — самое глубокое в мире?",["Балхаш","Байкал","Виктория","Онтарио"],1,"Глубина Байкала — более 1600 метров."],
+["Какой химический элемент обозначается Au?",["Серебро","Алюминий","Золото","Аргон"],2,"От латинского aurum — «золото»."],
+["В каком году Казахстан обрёл независимость?",["1986","1991","1993","2000"],1,"16 декабря 1991 года."],
+["Какую планету называют «красной»?",["Венера","Юпитер","Меркурий","Марс"],3,"Красный цвет — от оксидов железа в грунте."],
+["Кто написал роман «Война и мир»?",["Достоевский","Тургенев","Толстой","Чехов"],2,"Лев Николаевич Толстой, 1869 год."],
+["Какое из этих «морей» на самом деле озеро?",["Чёрное","Каспийское","Красное","Жёлтое"],1,"Каспий — крупнейшее озеро мира, замкнутый водоём."]]},
+{t:"РУССКИЙ БЕЗ СТРАХА",k:"mc",p:2,d:[
+["«Надеть пальто» или «одеть пальто»?",["Надеть пальто","Одеть пальто"],0,"Надевают что-то на себя, одевают кого-то.","Как правильно?"],
+["Где ударение: «звонит»?",["звОнит","звонИт"],1,"Правильно: звонИт, звонИшь.","Ударение"],
+["Где ударение: «красивее»?",["красИвее","красивЕе"],1,"Правильно: красивЕе.","Ударение"],
+["Где ударение: «торты»?",["тОрты","тортЫ"],0,"Правильно: тОрты.","Ударение"],
+["Где ударение: «договор»?",["дОговор","договОр"],1,"Правильно: договОр, договорА.","Ударение"],
+["«Я одел пальто и вышел». Как исправить?",["Я надел пальто","Я одела пальто","Ошибки нет"],0,"Себя «надеваем» — я надел пальто.","Исправь ошибку"],
+["Что означает слово «лаконичный»?",["Краткий и ёмкий","Шумный","Печальный","Добрый"],0,"Лаконичный — выраженный кратко, без лишних слов.","Значение слова"],
+["Что значит «зарубить на носу»?",["Хорошо запомнить","Сильно обидеться","Убежать","Пораниться"],0,"Запомнить крепко и навсегда.","Фразеологизм"]]},
+{t:"А ЧТО, ЕСЛИ?..",k:"open",p:3,tm:60,d:[
+["У отца пять сыновей. У каждого сына есть одна сестра. Сколько всего детей?","6","Сестра у всех пятерых одна и та же."],
+["Что становится больше, если от него отнять?","Яма","Чем больше земли отнимаешь, тем больше яма."],
+["Что можно увидеть с закрытыми глазами?","Сон","Сны мы видим именно с закрытыми глазами."],
+["Продолжите: 2, 4, 8, 16, …","32","Каждое число вдвое больше предыдущего."],
+["Продолжите: 1, 4, 9, 16, …","25","Это квадраты чисел: 1², 2², 3², 4², 5²."],
+["Сколько месяцев в году имеют 28 дней?","Все 12","В каждом месяце есть 28 дней (и не только)."]]},
+{t:"КТО Я?",k:"who",p:3,d:[
+["Абай Кунанбаев",["Я родился в Казахстане.","Я известен как великий мыслитель и поэт.","Моё имя связано с казахской письменностью и культурой."]],
+["Шокан Уалиханов",["Я родился в XIX веке в Казахстане.","Я учёный, путешественник, этнограф.","Я изучал Кашгарию и записал эпос «Манас»."]],
+["Ыбырай Алтынсарин",["Я казахский просветитель XIX века.","Я открывал школы для казахских детей.","Я автор «Киргизской хрестоматии»."]],
+["Юрий Гагарин",["Я родился в Смоленской области.","12 апреля 1961 года я совершил подвиг.","Я первый человек в космосе. Поехали!"]],
+["Альберт Эйнштейн",["Я родился в Германии.","Я создал теорию относительности.","На фото я высовываю язык, а формула моя — E=mc²."]],
+["Леонардо да Винчи",["Я жил в Италии в эпоху Возрождения.","Я был и художником, и изобретателем.","Я написал «Мону Лизу»."]],
+["Мария Кюри",["Я родилась в Варшаве, жила во Франции.","Я изучала радиоактивность.","Я дважды лауреат Нобелевской премии."]],
+["Мухтар Ауэзов",["Я родился в Семипалатинской области.","Я казахский писатель и учёный.","Я автор романа-эпопеи «Путь Абая»."]]]},
+{t:"УЧИТЕЛЬ ТОЖЕ ЧЕЛОВЕК",k:"emoji",p:2,d:[
+["🧙‍♂️ ⚡ 🏰","Гарри Поттер"],["🦁 👑","Король Лев"],["🚢 🧊 💔","Титаник"],["🐠 🔍","В поисках Немо"],
+["🍎 🪞 👸","Белоснежка"],["🕷️ 🕸️ 🦸","Человек-паук"],["🐺 👵 🧺 👧","Красная Шапочка"],["👹 🐴 💚","Шрек"]]},
+{t:"ОБЪЯСНИ, НЕ ГОВОРЯ",k:"word",tm:60,d:["директор","каникулы","дневник","контрольная","перемена","родительское собрание","отпуск","понедельник","ученик","зарплата"]},
+{t:"УЧЕНИК СПРАШИВАЕТ",k:"open",p:5,tm:90,d:[
+["Почему слово «молоко» пишется через О, если мы говорим «малако»?","Безударную гласную проверяем ударением: молОчный, мОлоко.","Максимум 5 баллов: правильность, понятность, простые слова."],
+["Почему небо голубое?","Воздух сильнее рассеивает синий свет Солнца.","Синий свет рассеивается во все стороны, поэтому виден отовсюду."],
+["Почему Луна не падает на Землю?","Она падает, но летит вбок так быстро, что всё время «промахивается».","Тяготение держит Луну на орбите."],
+["Почему мы видим радугу?","Свет Солнца преломляется в каплях дождя и разделяется на цвета.","Нужны солнце за спиной и дождь впереди."],
+["Почему корабль не тонет?","Он вытесняет воды столько, сколько весит сам: плотность корабля меньше воды.","Закон Архимеда: корпус внутри полый."],
+["Почему самолёт летает?","Крыло создаёт подъёмную силу, когда самолёт разгоняется двигателями.","Воздух над крылом движется иначе, чем под ним."]]},
+{t:"ПОСЛЕДНИЙ УРОК",k:"open",p:1,d:[
+["Столица Франции?","Париж",""],["Самая большая планета?","Юпитер",""],["Автор «Евгения Онегина»?","А. С. Пушкин",""],
+["Сколько падежей в русском языке?","Шесть",""],["Формула воды?","H₂O",""],["Сколько континентов?","Шесть (или семь — по разным системам)",""],
+["Кто написал «Маленького принца»?","Антуан де Сент-Экзюпери",""],["Столица Казахстана?","Астана",""],
+["Какой газ нужен человеку для дыхания?","Кислород",""],["Сколько дней в високосном году?","366",""]]}
+];
+/* ================================================= */
+let S;try{S=JSON.parse(localStorage.getItem("uu")||"null")}catch(e){}
+S=S||{teams:[],screen:"home",r:0,i:0,rev:0,sel:null,hint:1,rate:{}};
+const sv=()=>{try{localStorage.setItem("uu",JSON.stringify(S))}catch(e){}};
+const len=()=>R[S.r].d?R[S.r].d.length:1;
+let AC;function snd(k){try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();let q={ok:[[660,.12],[880,.25]],end:[[440,.25],[440,.25],[330,.6]],win:[[523,.15],[659,.15],[784,.15],[1047,.6]]}[k],t=AC.currentTime;q.forEach(([f,d])=>{const o=AC.createOscillator(),g=AC.createGain();o.frequency.value=f;o.connect(g);g.connect(AC.destination);g.gain.setValueAtTime(.15,t);g.gain.exponentialRampToValueAtTime(.001,t+d);o.start(t);o.stop(t+d);t+=d})}catch(e){}}
+/* ТАЙМЕР */
+const T={l:60,t:60,on:0,id:0};
+const fm=s=>String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");
+function updT(){$("tm").textContent=fm(T.l);$("tm").className=T.l<=10&&T.l>0?"warn":""}
+function setT(s){pauseT();T.t=T.l=Math.max(1,s|0);updT()}
+function startT(){if(T.on)return;if(T.l<=0)T.l=T.t;T.on=1;T.id=setInterval(()=>{T.l--;updT();if(T.l<=0){pauseT();snd("end");$("tu").classList.add("show");setTimeout(()=>$("tu").classList.remove("show"),2500)}},1000)}
+function pauseT(){T.on=0;clearInterval(T.id)}
+/* ИГРА */
+function adj(i,d){if(!S.teams[i]||!d)return;S.teams[i].s+=d;if(d>0)snd("ok");render();if($("bd").classList.contains("show"))board(1)}
+function panel(){$("pn").classList.toggle("show")}
+function board(keep){const b=$("bd");if(!keep)b.classList.toggle("show");if(!b.classList.contains("show"))return;
+b.innerHTML="<h1 style='font-size:clamp(40px,6vw,90px)'>ТАБЛО</h1><table>"+S.teams.map((t,i)=>`<tr><td>${esc(t.n)}</td><td><button onclick="adj(${i},-1)">−</button></td><td><input type=number value=${t.s} onchange="S.teams[${i}].s=+this.value||0;render()"></td><td><button onclick="adj(${i},1)">+</button></td></tr>`).join("")+"</table><div class=act><button onclick=\"if(confirm('Обнулить все баллы?')){S.teams.forEach(t=>t.s=0);render();board(1)}\">Обнулить</button><button class=pri onclick=board()>Закрыть</button></div>"}
+function home(){S.screen="home";render()}
+function goR(n){S.r=n;S.i=0;S.rev=0;S.sel=null;S.hint=1;S.rate={};S.screen="intro";S.started=1;const t=R[n].tm;if(t)setT(t);render()}
+function rs(){S.rev=0;S.sel=null;S.hint=1;S.screen="play";render()}
+function nx(){if(S.screen!="play"){S.screen="play";return render()}if(S.i<len()-1){S.i++;rs()}else endRound()}
+function pv(){if(S.i>0){S.i--;rs()}else if(S.r>0){S.r--;S.i=len()-1;rs()}}
+function endRound(){S.r<R.length-1?goR(S.r+1):fin()}
+function fin(){S.screen="final";render();snd("win")}
+function tgl(v){if(S.screen!="play")return;S.rev=v;if(v)snd("ok");render()}
+function hnt(){const it=R[S.r].d&&R[S.r].d[S.i];if(R[S.r].k=="who"&&S.hint<it[1].length){S.hint++;render()}}
+function nw(){if(R[S.r].k!="word")return;if(S.screen!="play")S.screen="play";else if(S.i<len()-1)S.i++;else S.i=0;setT(60);startT();render()}
+function newGame(){if(confirm("Вы уверены? Текущие результаты будут удалены.")){pauseT();try{localStorage.removeItem("uu")}catch(e){}S={teams:[],screen:"home",r:0,i:0,rev:0,sel:null,hint:1,rate:{}};render()}}
+function mk(){const n=+$("cn").value,old=[...document.querySelectorAll(".tn")].map(x=>x.value),d=["Эрудиты","Грамотеи","Интеллект","Педагоги PRO"];$("tn").innerHTML=Array.from({length:n},(_,i)=>`<input class=tn value="${esc(old[i]||d[i]||"Команда "+(i+1))}">`).join("")}
+function start(){S.teams=[...document.querySelectorAll(".tn")].map((x,i)=>({n:x.value.trim()||"Команда "+(i+1),s:0,m:""}));goR(0)}
+function rate(i,v){S.teams[i].s+=v-(S.rate[i]||0);S.rate[i]=v;render()}
+function render(){
+const r=R[S.r],it=r.d?r.d[S.i]:null,st=$("st");
+$("sb").innerHTML=S.teams.map(t=>`<div class=chip><b>${t.s}</b><span>${esc(t.n)}</span></div>`).join("");
+$("rs").innerHTML=R.map((x,i)=>`<option value=${i} ${i==S.r?"selected":""}>${i+1}. ${x.t}</option>`).join("");
+$("ps").innerHTML=S.teams.map((t,i)=>`<option value=${i}>${esc(t.n)}</option>`).join("");
+$("pr").innerHTML=[15,30,45,60,90,120].map(s=>`<button onclick="setT(${s})">${s}</button>`).join("");
+const pl=S.screen=="play";
+$("lab").textContent=pl||S.screen=="intro"?`Урок ${S.r+1} из ${R.length}: ${r.t}${pl?" · задание "+(S.i+1)+"/"+len():""}`:"УЧИтель — УЧИсь!";
+$("pgb").style.width=(S.started?((S.r+(pl?(S.i+1)/len():0))/R.length*100):0)+"%";
+let h="";
+if(S.screen=="home"){
+h=`<div class=in><h1>УЧИтель — <i>УЧИсь!</i></h1></div><div class=sub>Интеллектуальное командное соревнование для учителей</div><div class=sub style="color:var(--pen)">Декада русского языка<br>«Учитель перед именем твоим»</div>`;
+if(!S.teams.length)h+=`<div class=set><label>Количество команд: <select id=cn onchange=mk()>${[2,3,4,5,6,7,8].map(n=>`<option ${n==4?"selected":""}>${n}</option>`)}</select></label><div id=tn class=set></div><button class="pri big" style="font-size:inherit" onclick=start()>Начать игру</button></div>`;
+else h+=`<div class=act>${S.started?`<button class=pri onclick="S.screen='play';render()">Продолжить</button>`:""}<button onclick=board()>Табло</button><button class=red onclick=newGame()>Начать новую игру</button></div><div class=rg>${R.map((x,i)=>`<button onclick=goR(${i})>Урок ${i+1}. ${x.t}</button>`).join("")}</div>`;
+}else if(S.screen=="intro"){
+h=`<div class=splash onclick="nx()"><div class=sub>УРОК № ${S.r+1}</div><h1>${r.t}</h1></div>`;
+setTimeout(()=>{if(S.screen=="intro"){S.screen="play";render()}},2200);
+}else if(S.screen=="final"){
+const o=S.teams.map(t=>t).sort((a,b)=>b.s-a.s),m=["🥇","🥈","🥉"];
+h=`<h1>🏆 РЕЗУЛЬТАТЫ</h1><div class=pod>${o.map((t,i)=>`<div class="${i==0?"f":""}" style="animation-delay:${(o.length-i)*.4}s">${m[i]||i+1+"."} ${esc(t.n)} — ${t.s}</div>`).join("")}</div><div class=sub style="color:var(--pen)">Урок окончен. Учиться — никогда!</div>`;
+}else{
+const k=r.k;let a="";h=`<span class=tag>Урок ${S.r+1}: ${r.t}</span>`;
+if(k=="team"){h+=`<h2 class=q>Команды представляются</h2><div class=sub>Название, девиз, короткое представление. Оценка 0–5.</div><div class=teams>${S.teams.map((t,i)=>`<div class=tc><b>${esc(t.n)}</b><input placeholder="Девиз" value="${esc(t.m||"")}" onchange="S.teams[${i}].m=this.value;sv()"><div>Оценить команду:</div><div class=rt>${[0,1,2,3,4,5].map(v=>`<button class="${S.rate[i]===v?"on":""}" onclick="rate(${i},${v})">${v}</button>`).join("")}</div></div>`).join("")}</div>`}
+else if(k=="mc"){h+=(it[4]?`<span class=tag style="background:var(--red);color:#fff">${it[4]}</span>`:"")+`<h2 class=q>${it[0]}</h2><div class=opts>${it[1].map((o,j)=>`<button class="opt ${S.sel===j&&!S.rev?"sel":""} ${S.rev&&j==it[2]?"ok":""} ${S.rev&&S.sel===j&&j!=it[2]?"bad":""}" onclick="S.sel=${j};render()">${"АБВГ"[j]}. ${o}</button>`).join("")}</div>`;if(S.rev)h+=`<div class=ex>✔ ${it[1][it[2]]}. ${it[3]}</div>`}
+else if(k=="open"){h+=`<h2 class=q>${it[0]}</h2>`;if(S.rev)h+=`<div class=ex>✔ ${it[1]}${it[2]?"<br><small>"+it[2]+"</small>":""}</div>`}
+else if(k=="who"){h+=`<h2 class=q>Кто я?</h2>`+it[1].slice(0,S.hint).map((x,j)=>`<div class=hint>${j+1}. ${x}</div>`).join("");if(S.rev)h+=`<div class=ex>✔ ${it[0]}</div>`;else if(S.hint<it[1].length)a=`<button class=pri onclick=hnt()>Ещё подсказка</button>`}
+else if(k=="emoji"){h+=`<h2 class=q>Угадайте по эмодзи</h2><div class=big>${it[0]}</div>`;if(S.rev)h+=`<div class=ex>✔ ${it[1]}</div>`}
+else if(k=="word"){h+=`<h2 class=q>Объясни команде, не используя однокоренные слова</h2><div class=big style="font-size:clamp(50px,9vw,150px);color:var(--pen)">${it}</div>`;a=`<button class=pri onclick=nw()>НОВОЕ СЛОВО</button><button onclick=startT()>Старт</button><button onclick=pauseT()>Пауза</button>`}
+if(S.rev&&r.p)h+=`<div class=aw>Начислить +${r.p}: ${S.teams.map((t,i)=>`<button onclick="adj(${i},${r.p})">${esc(t.n)}</button>`).join("")}</div>`;
+h+=`<div class=act><button onclick=pv()>◀ Назад</button>${k!="team"&&k!="word"?(S.rev?`<button onclick=tgl(0)>Скрыть ответ</button>`:`<button class=pri onclick=tgl(1)>Показать ответ</button>`):""}${a}<button class=pri onclick=nx()>Следующее задание ▶</button></div>`;
+}
+st.innerHTML=h;if(S.screen=="home"&&!S.teams.length)mk();sv();updT()}
+document.onkeydown=e=>{if(/INPUT|SELECT/.test(e.target.tagName))return;if(e.key=="ArrowRight")nx();if(e.key=="ArrowLeft")pv();if(e.key==" "){e.preventDefault();tgl(S.rev?0:1)}};
+if(S.screen=="intro")S.screen="play";
+render();
+</script></body></html>
